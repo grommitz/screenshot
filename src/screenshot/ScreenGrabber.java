@@ -13,7 +13,6 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,9 +26,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 /**
+ * Grabs screenshot of the desktop & adds a timestamp.
  * 
  * @author Martin Charlesworth
  *
@@ -47,7 +46,6 @@ public class ScreenGrabber extends JPanel {
 		return screenShot;
 	}
 
-	
 	public ScreenGrabber() {
 		try {
 			image = grab(); //ImageIO.read(new URL("http://sstatic.net/so/img/logo.png"));
@@ -57,7 +55,7 @@ public class ScreenGrabber extends JPanel {
 		this.setPreferredSize(new Dimension(
 				image.getWidth(), image.getHeight()));
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm   ");
 		String overlayText = formatter.format(now.getTime());
 		
 		image = addOverlayText(image, overlayText);
@@ -66,8 +64,7 @@ public class ScreenGrabber extends JPanel {
 	private BufferedImage addOverlayText(BufferedImage old, String overlayText) {
 		int w = old.getWidth();
 		int h = old.getHeight();
-		System.out.println("old image type = " + old.getType());
-		BufferedImage img = new BufferedImage(w, h, old.getType()); // BufferedImage.TYPE_INT_ARGB);
+		BufferedImage img = new BufferedImage(w, h, old.getType());
 		Graphics2D g2d = img.createGraphics();
 		g2d.drawImage(old, 0, 0, null);
 		g2d.setPaint(Color.blue);
@@ -109,7 +106,7 @@ public class ScreenGrabber extends JPanel {
 		menu.getAccessibleContext().setAccessibleDescription(
 				"The only menu in this program that has menu items");
 		menuBar.add(menu);
-		JMenuItem menuItem = new JMenuItem("Save"); //, KeyEvent.VK_T);
+		JMenuItem menuItem = new JMenuItem("Save");
 		menuItem.addActionListener(new Saver());
 		menu.add(menuItem);
 		return menuBar;
